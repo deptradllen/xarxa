@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Xarxa de Col·laboracions Interdepartamentals · UPF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Verdana:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg: #F6F6F3;
+      --surface: #fcfcfb;
+      --ink: #14161a;
+      --ink-2: #4f5157;
+      --muted: #87888c;
+      --hair: #e2e1da;
+      --accent: #c8102e;
+      --edge: #7d8794;
+      --dtcl-col: #2a78d6;
+      --f-body: Verdana, Geneva, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #111214;
+        --surface: #1a1a19;
+        --ink: #f0efec;
+        --ink-2: #c3c2b7;
+        --muted: #8d8c86;
+        --hair: #2c2c2a;
+        --edge: #8d97a3;
+        color-scheme: dark;
+      }
+    }
+
+    [hidden] { display: none !important; }
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: grid;
+      gap: 18px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 16px;
+      border-bottom: 1px solid var(--hair);
+      padding-bottom: 16px;
+    }
+    .dept-logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      max-width: 55%;
+      flex-shrink: 0;
+    }
+    .dept-logo {
+      height: auto;
+      max-height: 60px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: bold;
+    }
+    header h1 {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 4px 0 0;
+      letter-spacing: -.01em;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--hair);
+      border-radius: 12px;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      touch-action: manipulation;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--hair);
+      font-size: 11.5px;
+      color: var(--ink-2);
+      align-items: center;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sw {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: none;
+    }
+
+    .tip {
+      position: fixed;
+      pointer-events: none;
+      background: var(--ink);
+      color: var(--surface);
+      font-size: 12px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      max-width: 380px;
+      z-index: 100;
+      line-height: 1.4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .nd, .ed { cursor: pointer; }
+    .nd circle, .ed { transition: opacity 0.15s ease, stroke-width 0.15s ease; }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="eyebrow">Departament de Traducció i Ciències del Llenguatge · UPF (2021–2026)</div>
+        <h1>Xarxa de Col·laboracions Interdepartamentals</h1>
+      </div>
+      <div class="dept-logo-container">
+        <img src="ca_uca_traduccio.png" alt="Logo DTCL UPF" class="dept-logo" onerror="this.onerror=null; this.src='DEPT.TCLt_rgb_hcat.png';">
+      </div>
+    </div>
+  </header>
+
+  <section class="tab-content">
+    <div class="card">
+      <svg id="net-intra" viewBox="0 0 900 660" role="img"></svg>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--dtcl-col)"></i>DTCL (Departament Central)</span>
+        <span><i class="sw" style="background:var(--accent)"></i>Departaments UPF</span>
+        <span>Número al cercle = projectes compartits</span>
+        <span>Passa el ratolí per sobre de les línies o departaments per veure detalls.</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* --- DADES COL·LABORACIONS INTRA-UPF --- */
+const INTRA_DATA = [
+  {
+    "id": "Enginyeria",
+    "nom": "Enginyeria (DTIC)",
+    "n_pdi": 17,
+    "projectes": [
+      "TALN i GTI (DTIC)",
+      "CLIK · Generative AI in teaching and learning",
+      "Projecte Signaria",
+      "COMRDI18-1-0013-00 · Model EDvidence",
+      "COMRDI18-1-0012-00 · Engagement",
+      "Desenvolupament del Signbank LSC"
+    ]
+  },
+  {
+    "id": "Polítiques",
+    "nom": "Ciències Polítiques i Socials",
+    "n_pdi": 11,
+    "projectes": [
+      "Grup GRETA (Ciències Polítiques)",
+      "Col·laboracions en projectes de recerca TRADILEX"
+    ]
+  },
+  {
+    "id": "Humanitats",
+    "nom": "Humanitats",
+    "n_pdi": 4,
+    "projectes": [
+      "Projecte Traduïm, existim (Generalitat)",
+      "Transformació docent amb enfocament de gènere (CLIK)",
+      "PID2021-123266NB-I00 · Dante traducido (Commedia)",
+      "Projecte BBVA · Thought Sharing in Action"
+    ]
+  },
+  {
+    "id": "Comunicació",
+    "nom": "Comunicació",
+    "n_pdi": 3,
+    "projectes": [
+      "COMRDI18-1-0013-00 · Model EDvidence",
+      "COMRDI18-1-0012-00 · Engagement",
+      "LCF/PR/FS21/60000004 · Xarxes socials i benestar adolescent"
+    ]
+  },
+  {
+    "id": "Dret",
+    "nom": "Dret",
+    "n_pdi": 2,
+    "projectes": [
+      "Equip Compendium.cat (Plataforma de recursos jurídics)"
+    ]
+  },
+  {
+    "id": "Medicina",
+    "nom": "Medicina i Ciències de la Vida",
+    "n_pdi": 1,
+    "projectes": [
+      "Equip pediàtric DIXIMED"
+    ]
+  },
+  {
+    "id": "Experimentals",
+    "nom": "Ciències Experimentals i de la Salut",
+    "n_pdi": 1,
+    "projectes": [
+      "PID2020-113796RB-I00 · Inter_ECODAL"
+    ]
+  }
+];
+
+const tip = document.getElementById('tip');
+const showTip = (ev, h) => { tip.innerHTML = h; tip.hidden = false; moveTip(ev); };
+const moveTip = ev => {
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.max(8, Math.min(ev.clientX + 14, innerWidth - w - 8)) + 'px';
+  tip.style.top = (ev.clientY + 14 + h > innerHeight ? Math.max(8, ev.clientY - h - 10) : ev.clientY + 14) + 'px';
+};
+const hideTip = () => tip.hidden = true;
+
+/* --- GRAFIC INTRA-UPF HUB AND SPOKE --- */
+const W = 900, H = 660, CX = 450, CY = 330, R = 220;
+
+function drawIntraNetwork() {
+  const svg = d3.select('#net-intra');
+  svg.selectAll('*').remove();
+
+  let sel = null;
+  let hov = null;
+
+  svg.on('click', function(ev) {
+    if (ev.target.tagName === 'svg' || ev.target.tagName === 'rect') {
+      sel = null;
+      hov = null;
+      update();
+    }
+  });
+
+  svg.append('rect')
+     .attr('width', W)
+     .attr('height', H)
+     .attr('fill', 'transparent');
+
+  const nodes = INTRA_DATA.map((d, i) => {
+    const angle = -Math.PI / 2 + (2 * Math.PI * i / INTRA_DATA.length);
+    return {
+      ...d,
+      x: CX + R * Math.cos(angle),
+      y: CY + R * Math.sin(angle),
+      angle: angle
+    };
+  });
+
+  const gE = svg.append('g').attr('fill', 'none');
+  const gBL = svg.append('g');
+  const gN = svg.append('g');
+
+  const maxPdi = d3.max(INTRA_DATA, d => d.n_pdi) || 1;
+
+  function update() {
+    const foc = sel || hov;
+
+    gE.selectAll('*').remove();
+    gBL.selectAll('*').remove();
+    gN.selectAll('*').remove();
+
+    nodes.forEach(d => {
+      const isConn = foc ? (foc === d.id || foc === 'DTCL') : true;
+      const ew = 2 + 8 * Math.sqrt(d.n_pdi / maxPdi);
+      const numProj = d.projectes.length;
+
+      // Areste Radial
+      gE.append('line')
+        .attr('class', 'ed')
+        .attr('x1', CX)
+        .attr('y1', CY)
+        .attr('x2', d.x)
+        .attr('y2', d.y)
+        .attr('stroke', isConn ? 'var(--edge)' : 'var(--hair)')
+        .attr('stroke-width', ew)
+        .attr('opacity', foc ? (isConn ? 0.95 : 0.08) : 0.65)
+        .on('mouseenter', (ev) => {
+          const projs = d.projectes.map(p => `• ${p}`).join('<br>');
+          showTip(ev, `<b>${d.nom}</b><br>Projectes compartits: <b>${numProj}</b><br><br><b>Llistat de projectes:</b><br>${projs}<br><br>Col·laboracions de PDI: <b>${d.n_pdi}</b>`);
+        })
+        .on('mousemove', moveTip)
+        .on('mouseleave', hideTip);
+
+      // Badge central amb el número de projectes
+      const mx = (CX + d.x) / 2;
+      const my = (CY + d.y) / 2;
+      const bl = gBL.append('g').attr('transform', `translate(${mx},${my})`).attr('opacity', foc ? (isConn ? 1 : 0.1) : 1);
+      bl.append('circle').attr('r', 10).attr('fill', 'var(--surface)').attr('stroke', isConn ? 'var(--edge)' : 'var(--hair)');
+      bl.append('text').attr('text-anchor', 'middle').attr('y', 4).attr('font-size', 10).attr('font-weight', 'bold').attr('fill', 'var(--ink)').text(numProj);
+    });
+
+    // Node Central DTCL
+    const grCentral = gN.append('g').attr('class', 'nd').attr('transform', `translate(${CX},${CY})`);
+
+    grCentral.append('circle')
+      .attr('r', 38)
+      .attr('fill', 'var(--surface)')
+      .attr('stroke', 'var(--dtcl-col)')
+      .attr('stroke-width', 3);
+
+    grCentral.append('circle')
+      .attr('r', 34)
+      .attr('fill', 'var(--dtcl-col)');
+
+    grCentral.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('y', 5)
+      .attr('font-size', 13)
+      .attr('font-weight', 'bold')
+      .attr('fill', '#ffffff')
+      .text('DTCL');
+
+    // Nodes de Departaments Perifèrics
+    nodes.forEach(d => {
+      const isFocNode = foc ? (foc === d.id || foc === 'DTCL') : true;
+      const numProj = d.projectes.length;
+      const rSize = 16 + 14 * Math.sqrt(numProj / 6);
+      const gr = gN.append('g').attr('class', 'nd').attr('transform', `translate(${d.x},${d.y})`);
+
+      gr.attr('opacity', isFocNode ? 1 : 0.2);
+
+      gr.append('circle')
+        .attr('r', rSize + 2)
+        .attr('fill', 'var(--surface)')
+        .attr('stroke', d.id === foc ? 'var(--ink)' : 'none')
+        .attr('stroke-width', 2);
+
+      gr.append('circle')
+        .attr('r', rSize)
+        .attr('fill', 'var(--accent)');
+
+      gr.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('y', 4)
+        .attr('font-size', 11)
+        .attr('font-weight', 'bold')
+        .attr('fill', '#ffffff')
+        .text(numProj);
+
+      // Etiquetes de nom de Departament fora dels nodes
+      const labD = rSize + 14;
+      const lx = labD * Math.cos(d.angle);
+      const ly = labD * Math.sin(d.angle);
+      const anc = Math.abs(Math.cos(d.angle)) < .3 ? 'middle' : Math.cos(d.angle) > 0 ? 'start' : 'end';
+
+      gr.append('text')
+        .attr('x', lx)
+        .attr('y', ly + 4)
+        .attr('text-anchor', anc)
+        .attr('font-size', 11.5)
+        .attr('font-weight', 'bold')
+        .attr('fill', 'var(--ink)')
+        .text(d.nom);
+
+      gr.on('click', (ev) => {
+        ev.stopPropagation();
+        sel = (sel === d.id) ? null : d.id;
+        hov = null;
+        update();
+      })
+      .on('mouseenter', (ev) => {
+        const projs = d.projectes.map(p => `• ${p}`).join('<br>');
+        showTip(ev, `<b>${d.nom}</b><br>Projectes compartits: <b>${numProj}</b><br><br><b>Llistat de projectes:</b><br>${projs}<br><br>Col·laboracions de PDI: <b>${d.n_pdi}</b>`);
+        if (!sel) {
+          hov = d.id;
+          update();
+        }
+      })
+      .on('mousemove', moveTip)
+      .on('mouseleave', () => {
+        hideTip();
+        hov = null;
+        update();
+      });
+    });
+  }
+
+  update();
+}
+
+drawIntraNetwork();
+</script>
+</body>
+</html>

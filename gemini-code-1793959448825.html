@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <title>Xarxes de col·laboracions · DTCL UPF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Verdana:wght@400;700&display=swap">
+  <style>
+    :root {
+      --bg: #F6F6F3;
+      --surface: #fcfcfb;
+      --ink: #14161a;
+      --ink-2: #4f5157;
+      --muted: #87888c;
+      --hair: #e2e1da;
+      --u-urling: #2a78d6;
+      --u-iula: #eb6834;
+      --u-tradi: #1baf7a;
+      --u-realm: #8e24aa;
+      --u-none: #a9a8a0;
+      --edge: #7d8794;
+      --accent: #2a78d6;
+      --node: #343841;
+      --t-p: #6250d6;
+      --t-a: #e87ba4;
+      --t-t: #eda100;
+      --f-body: Verdana, Geneva, sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #111214;
+        --surface: #1a1a19;
+        --ink: #f0efec;
+        --ink-2: #c3c2b7;
+        --muted: #8d8c86;
+        --hair: #2c2c2a;
+        --u-urling: #3987e5;
+        --u-iula: #d95926;
+        --u-tradi: #199e70;
+        --u-realm: #ab47bc;
+        --u-none: #76756e;
+        --edge: #8d97a3;
+        --accent: #3987e5;
+        --node: #dcdbd5;
+        color-scheme: dark;
+      }
+    }
+
+    [hidden] { display: none !important; }
+    * { box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .wrap {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: grid;
+      gap: 18px;
+    }
+
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 16px;
+      border-bottom: 1px solid var(--hair);
+      padding-bottom: 16px;
+    }
+    .dept-logo-container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      max-width: 55%;
+      flex-shrink: 0;
+    }
+    .dept-logo {
+      height: auto;
+      max-height: 60px;
+      max-width: 100%;
+      object-fit: contain;
+    }
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: bold;
+    }
+    header h1 {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 4px 0 0;
+      letter-spacing: -.01em;
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: var(--surface);
+      padding: 6px;
+      border: 1px solid var(--hair);
+      border-radius: 10px;
+      width: 100%;
+    }
+    .tab-btn {
+      flex: 1 1 auto;
+      text-align: center;
+      padding: 10px 14px;
+      border: none;
+      background: transparent;
+      color: var(--ink-2);
+      font-family: var(--f-body);
+      font-size: 12.5px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+    .tab-btn:hover {
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--ink);
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--hair);
+      border-radius: 12px;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .card-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--hair);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+    .card-title i {
+      display: inline-block;
+      width: 20px;
+      height: 0;
+      border-top: 4px solid;
+      border-radius: 2px;
+    }
+
+    .sgr-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--ink-2);
+      cursor: pointer;
+      user-select: none;
+    }
+    .sgr-control input {
+      cursor: pointer;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+    }
+
+    select.type-select {
+      font-family: var(--f-body);
+      font-size: 12px;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--hair);
+      background: var(--bg);
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      touch-action: manipulation;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      padding: 12px 16px;
+      border-top: 1px solid var(--hair);
+      font-size: 11.5px;
+      color: var(--ink-2);
+      align-items: center;
+    }
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sw {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: none;
+    }
+    .split {
+      background: linear-gradient(180deg, var(--u-iula) 50%, var(--u-tradi) 50%);
+    }
+    .ln {
+      display: inline-block;
+      width: 20px;
+      height: 0;
+      border-top: 2px solid var(--edge);
+    }
+    .ln.w {
+      border-top-width: 5px;
+    }
+
+    .tip {
+      position: fixed;
+      pointer-events: none;
+      background: var(--ink);
+      color: var(--surface);
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 6px;
+      max-width: 340px;
+      z-index: 100;
+      line-height: 1.4;
+    }
+
+    .nd, .ed, .pn { cursor: pointer; }
+    .nd circle, .ed { transition: opacity 0.15s ease; }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div>
+        <div class="eyebrow">Departament de Traducció i Ciències del Llenguatge · UPF (2021–2026)</div>
+        <h1>Xarxes de col·laboracions</h1>
+      </div>
+      <div class="dept-logo-container">
+        <img src="marca.png" alt="Logo UPF" class="dept-logo" 
+          onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 320 80\' width=\'320\' height=\'80\'%3E%3Crect x=\'5\' y=\'5\' width=\'70\' height=\'70\' stroke=\'%23c8102e\' stroke-width=\'5\' fill=\'none\'/%3E%3Ctext x=\'14\' y=\'52\' font-family=\'Verdana, Geneva, sans-serif\' font-weight=\'bold\' font-size=\'28\' fill=\'%23c8102e\'%3Eupf.%3C/text%3E%3Ctext x=\'95\' y=\'32\' font-family=\'Verdana, Geneva, sans-serif\' font-weight=\'bold\' font-size=\'16\' fill=\'%23c8102e\'%3EUniversitat%3C/text%3E%3Ctext x=\'95\' y=\'52\' font-family=\'Verdana, Geneva, sans-serif\' font-weight=\'bold\' font-size=\'16\' fill=\'%23c8102e\'%3EPompeu Fabra%3C/text%3E%3Ctext x=\'95\' y=\'70\' font-family=\'Verdana, Geneva, sans-serif\' font-style=\'italic\' font-size=\'14\' fill=\'%23c8102e\'%3EBarcelona%3C/text%3E%3C/svg%3E';">
+      </div>
+    </div>
+
+    <nav class="nav-tabs" role="tablist">
+      <button class="tab-btn active" onclick="switchTab(1)" role="tab" id="tab1-btn">1. Projectes compartits entre grups</button>
+      <button class="tab-btn" onclick="switchTab(2)" role="tab" id="tab2-btn">2. Xarxa de PDI</button>
+    </nav>
+  </header>
+
+  <!-- PESTANYA 1: Projectes compartits entre grups -->
+  <section id="tab1" class="tab-content">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title"><i style="border-color:var(--accent)"></i>PROJECTES COMPARTITS ENTRE GRUPS DE RECERCA</h2>
+        <label class="sgr-control">
+          <input type="checkbox" id="chk-hide-sgr" onchange="drawP1()">
+          <span>Amagar línies de projectes SGR</span>
+        </label>
+      </div>
+      <svg id="net-p1" viewBox="0 0 900 660" role="img"></svg>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--u-urling)"></i>URLING</span>
+        <span><i class="sw" style="background:var(--u-iula)"></i>CER-IULA</span>
+        <span><i class="sw" style="background:var(--u-tradi)"></i>TRADILEX</span>
+        <span><i class="sw" style="background:var(--u-realm)"></i>REALM</span>
+        <span><i class="sw split"></i>INFOLEX (CER-IULA i TRADILEX)</span>
+        <span><i class="ln"></i>1 projecte</span>
+        <span><i class="ln w"></i>3 projectes</span>
+        <span>Passa el ratolí per veure connexions. Clic per fixar / desmarcar.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- PESTANYA 2: Xarxa de PDI amb selector -->
+  <section id="tab2" class="tab-content" hidden>
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title" id="pdi-title"><i style="border-color:var(--t-p)"></i>PROJECTES <span>· Col·laboracions de PDI en projectes</span></h2>
+        <select class="type-select" id="pdi-type-select" onchange="changePdiType(this.value)">
+          <option value="P">Projectes</option>
+          <option value="A">Articles</option>
+          <option value="T">Tesis</option>
+        </select>
+      </div>
+      <svg id="net-p2" viewBox="0 0 1000 780" role="img"></svg>
+      <div class="legend">
+        <span><i class="sw" style="background:var(--u-urling)"></i>URLING</span>
+        <span><i class="sw" style="background:var(--u-iula)"></i>CER-IULA</span>
+        <span><i class="sw" style="background:var(--u-tradi)"></i>TRADILEX</span>
+        <span><i class="sw" style="background:var(--u-realm)"></i>REALM</span>
+        <span><i class="sw split"></i>INFOLEX (CER-IULA i TRADILEX)</span>
+        <span>Mida del cercle = col·laboracions del PDI · Gruix = col·laboracions de la parella</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="tip" id="tip" hidden></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* --- DADES PESTANYA 1 --- */
+const P1_DATA = [
+  {"id":"COMRDI181001200","t":"Engagement. Nous formats tecnològics...","gs":["ALLENCAM","GEDIT"]},
+  {"id":"PID2024157397NBI00","t":"Comparant les trajectòries de L1 i L2...","gs":["ALLENCAM","GLIF"]},
+  {"id":"T-EUTOPIAMULTILINGUALISM","t":"EUTOPIA. Multilingualism and Diversity...","gs":["ALLENCAM","GEDIT"]},
+  {"id":"7151540","t":"AMORE – A distributional MOdel of Reference...","gs":["COLT","GLIF"]},
+  {"id":"PID2020112602GBI00","t":"Contextual effects in referring expressions...","gs":["COLT","GLIF"]},
+  {"id":"T-INCUBATORLINGUISTIC","t":"Incubator 'Linguistic Interaction between Humans and AI'","gs":["COLT","GLIF"]},
+  {"id":"PID2024157523OBI00","t":"ADLaR – Recursos lingüísticos digitales accesibles...","gs":["COLT","GEDIT"]},
+  {"id":"PID2020113236GBI00","t":"RetroTrad – La retroalimentació formativa...","gs":["GEDIT","GR@EL"]},
+  {"id":"SGR-952","t":"TraDiLex – Grup de Recerca en Traducció...","gs":["GEDIT","INFOLEX","TRILCAT"],"sgr":true},
+  {"id":"TED2021130926A100","t":"UNIVAC – TED2021-130926A-100","gs":["GEDIT","INFOLEX"]},
+  {"id":"PID2019105241GBI00","t":"Rutas hacia la cognición cuando el lenguaje falla","gs":["GLIF","GraC"]},
+  {"id":"T-ANIMATINGTHETRUTH","t":"Animating the truth and use of language...","gs":["GLIF","GraC"]},
+  {"id":"SGR-947","t":"GLIF Consolidation 'Grup de Lingüística Formal'","gs":["GLIF","GraC","INFOLEX"],"sgr":true},
+  {"id":"T-GENERATIVEAI","t":"Generative Artificial Intelligence in teaching...","gs":["GLIF","GR@EL"]},
+  {"id":"COMRDI181001300","t":"Model EDvidence: un sistema de gestió...","gs":["GR@EL","GREPG"],"sgr":true},
+  {"id":"CLT03221000014","t":"Les traduccions de la Divina comèdia de Dante...","gs":["INFOLEX","TRILCAT"]},
+  {"id":"PID2025169052NBI00","t":"LIRAT – La literacidad para la retroalimentación...","gs":["GEDIT","GR@EL"]}
+];
+
+/* --- DADES PESTANYA 2 (PDI) --- */
+const PDI_DATA = {"nodes":[{"id":"Alsina","nom":"Alexandre Alsina Keith","g":"GLIF"},{"id":"Andujar","nom":"Gemma Andujar Moreno","g":"GEDIT"},{"id":"Arias","nom":"Blanca Arias Badia","g":"INFOLEX"},{"id":"Atienza","nom":"Encarnación Atienza Cerezo","g":"GR@EL"},{"id":"Bach","nom":"Maria del Carme Bach Martorell","g":"GR@EL"},{"id":"Barberà","nom":"Gemma Barberà Altimira","g":"GLIF"},{"id":"Baroni","nom":"Marco Baroni","g":"COLT"},{"id":"Bel Gaya","nom":"Aurora Bel Gaya","g":"ALLENCAM"},{"id":"Bel Rafecas","nom":"Maria Núria Bel Rafecas","g":"IULATERM"},{"id":"Bernal","nom":"Elisenda Bernal Gallen","g":"INFOLEX"},{"id":"Bisiada","nom":"Mario Bisiada","g":"GEDIT"},{"id":"Boleda","nom":"Gemma Boleda Torrent","g":"COLT"},{"id":"Bosch","nom":"Mariazell Eugènia Bosch Fábregas","g":"GEDIT"},{"id":"Brochhagen","nom":"Thomas Brochhagen","g":"COLT"},{"id":"Brumme","nom":"Jenny Elise Brumme","g":"INFOLEX"},{"id":"Cassany","nom":"Daniel Cassany Comas","g":"GR@EL"},{"id":"Cañada","nom":"Maria Dolors Cañada Pujols","g":"GR@EL"},{"id":"Cunillera","nom":"Montserrat Cunillera Domenech","g":"GEDIT"},{"id":"De Dios","nom":"Iria De Dios Flores","g":"COLT"},{"id":"Dogru","nom":"Gokhan Dogru","g":"IULATERM"},{"id":"Espunya","nom":"Anna Maria Espunya Prat","g":"GEDIT"},{"id":"Estopà","nom":"Rosa Estopa Bagot","g":"IULATERM"},{"id":"Fontana","nom":"Jose Maria Fontana Mendez","g":"GLIF"},{"id":"Freixa","nom":"Judit Freixa Aymerich","g":"IULATERM"},{"id":"Gabarró","nom":"Sílvia Gabarró López","g":"GLIF"},{"id":"Gelpí","nom":"Cristina Gelpi Arroyo","g":"GEDIT"},{"id":"Gimeno","nom":"Esther Gimeno Ugalde","g":"TRILCAT"},{"id":"Grzech","nom":"Karolina Grzech","g":"GEDIT"},{"id":"Hinzen","nom":"Wolfram Hinzen","g":"GraC"},{"id":"Igareda","nom":"Paula Igareda González","g":"GEDIT"},{"id":"Llompart","nom":"Elisabet Llompart","g":"ALLENCAM"},{"id":"Lorente","nom":"Mercè Lorente Casafont","g":"IULATERM"},{"id":"López","nom":"Carmen López Ferrero","g":"GR@EL"},{"id":"Maldonado","nom":"Mora Maldonado","g":"GLIF"},{"id":"Marfany","nom":"Marta Marfany Simó","g":"TRILCAT"},{"id":"Martín","nom":"José Fernando Martín Villena","g":"ALLENCAM"},{"id":"Mayol","nom":"Laia Mayol Toll","g":"GLIF"},{"id":"McNally","nom":"Louise Elizabeth McNally Seifert","g":"GLIF"},{"id":"Miche","nom":"Elisabeth Verònica Miche Comerma","g":"GEDIT"},{"id":"Milà","nom":"Alba Milà García","g":"INFOLEX"},{"id":"Pavon","nom":"Manuel Pavon Belizon","g":"TRILCAT"},{"id":"Pegenaute","nom":"Luis Pegenaute Rodríguez","g":"TRILCAT"},{"id":"Perpiñán","nom":"Sílvia Perpiñán Hinarejos","g":"ALLENCAM"},{"id":"Prieto","nom":"Pilar Prieto Vives","g":"GREPG"},{"id":"Pujol","nom":"Dídac Pujol Morillo","g":"TRILCAT"},{"id":"Quer","nom":"Jose Francisco Quer Villanueva","g":"GLIF"},{"id":"Rees","nom":"Geraint Paul Rees","g":"INFOLEX"},{"id":"Ruiz","nom":"José Francisco Ruiz Casanova","g":"TRILCAT"},{"id":"Stojanovic","nom":"Isidora Stojanovic","g":"GLIF"},{"id":"Torner","nom":"Sergi Torner Castells","g":"INFOLEX"},{"id":"Tudela","nom":"Anna Isanta","g":"GR@EL"},{"id":"Vallduví","nom":"Enric Vallduví Botet","g":"GLIF"},{"id":"Wiltschko","nom":"Martina Wiltschko","g":"GLIF"},{"id":"Zabalbeascoa","nom":"Patrick Zabalbeascoa Terran","g":"GEDIT"}],
+"edges":[{"a":"Alsina","b":"Bel Gaya","P":1,"A":0,"T":0},{"a":"Alsina","b":"Bernal","P":1,"A":0,"T":0},{"a":"Alsina","b":"Martín","P":1,"A":0,"T":0},{"a":"Alsina","b":"Perpiñán","P":1,"A":0,"T":0},{"a":"Andujar","b":"Cañada","P":7,"A":8,"T":0},{"a":"Andujar","b":"Cunillera","P":1,"A":1,"T":1},{"a":"Andujar","b":"Milà","P":1,"A":0,"T":0},{"a":"Arias","b":"Bernal","P":2,"A":1,"T":0},{"a":"Arias","b":"Igareda","P":1,"A":0,"T":0},{"a":"Arias","b":"Milà","P":2,"A":0,"T":0},{"a":"Arias","b":"Rees","P":1,"A":0,"T":0},{"a":"Arias","b":"Torner","P":3,"A":9,"T":2},{"a":"Arias","b":"Zabalbeascoa","P":1,"A":2,"T":1},{"a":"Atienza","b":"Bach","P":2,"A":0,"T":0},{"a":"Atienza","b":"Cassany","P":2,"A":0,"T":0},{"a":"Atienza","b":"Cañada","P":1,"A":0,"T":0},{"a":"Atienza","b":"López","P":1,"A":1,"T":0},{"a":"Atienza","b":"Milà","P":1,"A":0,"T":0},{"a":"Bach","b":"Barberà","P":2,"A":1,"T":1},{"a":"Bach","b":"Cassany","P":2,"A":1,"T":2},{"a":"Bach","b":"Cañada","P":3,"A":3,"T":1},{"a":"Bach","b":"Tudela","P":1,"A":0,"T":0},{"a":"Barberà","b":"López","P":2,"A":1,"T":0},{"a":"Barberà","b":"Quer","P":1,"A":1,"T":0},{"a":"Baroni","b":"Boleda","P":3,"A":5,"T":0},{"a":"Bel Gaya","b":"Martín","P":1,"A":0,"T":0},{"a":"Bel Gaya","b":"Perpiñán","P":3,"A":2,"T":0},{"a":"Bel Rafecas","b":"Freixa","P":1,"A":0,"T":0},{"a":"Bel Rafecas","b":"Lorente","P":2,"A":0,"T":0},{"a":"Bernal","b":"Cunillera","P":1,"A":2,"T":0},{"a":"Bernal","b":"Estopà","P":3,"A":0,"T":0},{"a":"Bernal","b":"Freixa","P":2,"A":3,"T":0},{"a":"Bernal","b":"Igareda","P":1,"A":0,"T":0},{"a":"Bernal","b":"Marfany","P":1,"A":2,"T":0},{"a":"Bernal","b":"Milà","P":3,"A":1,"T":1},{"a":"Bernal","b":"Rees","P":2,"A":0,"T":0},{"a":"Bernal","b":"Torner","P":2,"A":2,"T":0},{"a":"Bernal","b":"Zabalbeascoa","P":1,"A":0,"T":0},{"a":"Bisiada","b":"De Dios","P":1,"A":0,"T":0},{"a":"Bisiada","b":"Espunya","P":1,"A":0,"T":2},{"a":"Bisiada","b":"Milà","P":1,"A":0,"T":0},{"a":"Boleda","b":"Brochhagen","P":4,"A":7,"T":0},{"a":"Boleda","b":"Fontana","P":1,"A":0,"T":0},{"a":"Boleda","b":"McNally","P":2,"A":0,"T":1},{"a":"Brochhagen","b":"De Dios","P":1,"A":0,"T":0},{"a":"Brochhagen","b":"Fontana","P":1,"A":0,"T":0},{"a":"Brochhagen","b":"McNally","P":2,"A":0,"T":0},{"a":"Brumme","b":"Milà","P":1,"A":0,"T":1},{"a":"Brumme","b":"Torner","P":1,"A":0,"T":1},{"a":"Cassany","b":"López","P":1,"A":0,"T":0},{"a":"Cassany","b":"Tudela","P":1,"A":0,"T":0},{"a":"Cañada","b":"Cunillera","P":1,"A":2,"T":1},{"a":"Cañada","b":"Milà","P":2,"A":0,"T":0},{"a":"Cunillera","b":"Marfany","P":1,"A":3,"T":1},{"a":"De Dios","b":"Milà","P":1,"A":0,"T":0},{"a":"Dogru","b":"Lorente","P":1,"A":0,"T":0},{"a":"Estopà","b":"Freixa","P":3,"A":0,"T":0},{"a":"Estopà","b":"Lorente","P":2,"A":4,"T":0},{"a":"Fontana","b":"McNally","P":2,"A":0,"T":0},{"a":"Freixa","b":"Lorente","P":2,"A":1,"T":0},{"a":"Freixa","b":"Milà","P":2,"A":0,"T":0},{"a":"Freixa","b":"Torner","P":1,"A":1,"T":0},{"a":"Gabarró","b":"Prieto","P":1,"A":0,"T":2},{"a":"Gimeno","b":"Pavon","P":1,"A":0,"T":0},{"a":"Grzech","b":"Milà","P":1,"A":0,"T":0},{"a":"Grzech","b":"Pegenaute","P":1,"A":0,"T":0},{"a":"Grzech","b":"Perpiñán","P":1,"A":0,"T":0},{"a":"Grzech","b":"Wiltschko","P":1,"A":0,"T":1},{"a":"Hinzen","b":"Wiltschko","P":1,"A":2,"T":0},{"a":"Igareda","b":"Milà","P":2,"A":0,"T":0},{"a":"Igareda","b":"Rees","P":1,"A":0,"T":0},{"a":"Igareda","b":"Torner","P":1,"A":0,"T":0},{"a":"Igareda","b":"Zabalbeascoa","P":1,"A":0,"T":1},{"a":"Llompart","b":"López","P":2,"A":1,"T":0},{"a":"Marfany","b":"Ruiz","P":1,"A":0,"T":0},{"a":"Martín","b":"Perpiñán","P":1,"A":0,"T":0},{"a":"Mayol","b":"McNally","P":1,"A":0,"T":0},{"a":"Mayol","b":"Stojanovic","P":1,"A":0,"T":0},{"a":"Mayol","b":"Vallduví","P":1,"A":1,"T":1},{"a":"McNally","b":"Stojanovic","P":1,"A":1,"T":0},{"a":"McNally","b":"Zabalbeascoa","P":1,"A":0,"T":0},{"a":"Miche","b":"Milà","P":1,"A":0,"T":0},{"a":"Milà","b":"Rees","P":1,"A":0,"T":0},{"a":"Milà","b":"Torner","P":3,"A":0,"T":0},{"a":"Milà","b":"Zabalbeascoa","P":1,"A":0,"T":0},{"a":"Rees","b":"Torner","P":1,"A":0,"T":0},{"a":"Rees","b":"Vallduví","P":1,"A":0,"T":0},{"a":"Rees","b":"Zabalbeascoa","P":1,"A":0,"T":0},{"a":"Torner","b":"Zabalbeascoa","P":1,"A":0,"T":0},{"a":"Arias","b":"Tudela","P":0,"A":2,"T":1},{"a":"Bach","b":"Bernal","P":0,"A":1,"T":0},{"a":"Bach","b":"Cunillera","P":0,"A":1,"T":0},{"a":"Bach","b":"López","P":0,"A":1,"T":0},{"a":"Bach","b":"Torner","P":0,"A":1,"T":0},{"a":"Barberà","b":"Bernal","P":0,"A":1,"T":1},{"a":"Barberà","b":"Cunillera","P":0,"A":1,"T":0},{"a":"Barberà","b":"De Dios","P":0,"A":1,"T":0},{"a":"Barberà","b":"Gabarró","P":0,"A":1,"T":0},{"a":"Barberà","b":"Marfany","P":0,"A":1,"T":0},{"a":"Barberà","b":"Torner","P":0,"A":1,"T":0},{"a":"Bel Rafecas","b":"Hinzen","P":0,"A":1,"T":1},{"a":"Bernal","b":"Brumme","P":0,"A":1,"T":0},{"a":"Bernal","b":"Lorente","P":0,"A":1,"T":0},{"a":"Boleda","b":"De Dios","P":0,"A":1,"T":4},{"a":"Boleda","b":"Mayol","P":0,"A":2,"T":1},{"a":"Brochhagen","b":"Hinzen","P":0,"A":1,"T":1},{"a":"Brochhagen","b":"Mayol","P":0,"A":1,"T":0},{"a":"Cassany","b":"Milà","P":0,"A":2,"T":0},{"a":"Cunillera","b":"Gelpí","P":0,"A":1,"T":0},{"a":"Cunillera","b":"Torner","P":0,"A":1,"T":0},{"a":"Hinzen","b":"Quer","P":0,"A":1,"T":0},{"a":"Llompart","b":"Prieto","P":0,"A":2,"T":0},{"a":"Maldonado","b":"Mayol","P":0,"A":1,"T":0},{"a":"Maldonado","b":"Stojanovic","P":0,"A":1,"T":0},{"a":"Marfany","b":"Torner","P":0,"A":1,"T":0},{"a":"Mayol","b":"Quer","P":0,"A":1,"T":1},{"a":"Milà","b":"Tudela","P":0,"A":3,"T":0},{"a":"Alsina","b":"Wiltschko","P":0,"A":0,"T":1},{"a":"Bach","b":"Pavon","P":0,"A":0,"T":1},{"a":"Barberà","b":"Mayol","P":0,"A":0,"T":1},{"a":"Barberà","b":"Prieto","P":0,"A":0,"T":1},{"a":"Bel Rafecas","b":"De Dios","P":0,"A":0,"T":1},{"a":"Bernal","b":"Brochhagen","P":0,"A":0,"T":1},{"a":"Bernal","b":"Pavon","P":0,"A":0,"T":1},{"a":"Bisiada","b":"Miche","P":0,"A":0,"T":1},{"a":"Bisiada","b":"Pavon","P":0,"A":0,"T":1},{"a":"Bosch","b":"Gabarró","P":0,"A":0,"T":1},{"a":"Brumme","b":"Igareda","P":0,"A":0,"T":1},{"a":"De Dios","b":"Rees","P":0,"A":0,"T":1},{"a":"Gimeno","b":"Marfany","P":0,"A":0,"T":1},{"a":"López","b":"Torner","P":0,"A":0,"T":1},{"a":"Marfany","b":"Pujol","P":0,"A":0,"T":1},{"a":"Mayol","b":"Wiltschko","P":0,"A":0,"T":1},{"a":"McNally","b":"Pavon","P":0,"A":0,"T":1},{"a":"Pavon","b":"Pegenaute","P":0,"A":0,"T":1}]};
+
+/* --- NOVAL SEQCÜÈNCIA D'ORDRE AL CERCLE --- */
+const ORDER = ['COLT','GraC','GLIF','ALLENCAM','GREPG','GR@EL','TRILCAT','GEDIT','INFOLEX','IULATERM'];
+const UNITS = {
+  URLING: ['COLT','GLIF','GraC','ALLENCAM'],
+  'CER-IULA': ['IULATERM','INFOLEX'],
+  TRADILEX: ['GEDIT','INFOLEX','TRILCAT'],
+  REALM: ['GREPG','GR@EL']
+};
+const UC = {
+  URLING: 'var(--u-urling)',
+  'CER-IULA': 'var(--u-iula)',
+  TRADILEX: 'var(--u-tradi)',
+  REALM: 'var(--u-realm)'
+};
+const uOf = g => Object.keys(UNITS).filter(u => UNITS[u].includes(g));
+const fillOf = g => { const u = uOf(g); return u.length > 1 ? 'url(#split)' : u.length ? UC[u[0]] : 'var(--u-none)'; };
+
+const tip = document.getElementById('tip');
+const showTip = (ev, h) => { tip.innerHTML = h; tip.hidden = false; moveTip(ev); };
+const moveTip = ev => {
+  const w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = Math.max(8, Math.min(ev.clientX + 14, innerWidth - w - 8)) + 'px';
+  tip.style.top = (ev.clientY + 14 + h > innerHeight ? Math.max(8, ev.clientY - h - 10) : ev.clientY + 14) + 'px';
+};
+const hideTip = () => tip.hidden = true;
+
+function switchTab(num) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.hidden = true);
+  document.getElementById(`tab${num}-btn`).classList.add('active');
+  document.getElementById(`tab${num}`).hidden = false;
+  if (num === 2 && !window.renderedP2) {
+    drawP2('P');
+    window.renderedP2 = true;
+  }
+}
+
+/* --- LOGICA PESTANYA 1 --- */
+const W1 = 900, H1 = 660, CX1 = 450, CY1 = 330, R1 = 185;
+const POS1 = {};
+ORDER.forEach((g, i) => {
+  const a = -Math.PI / 2 + 2 * Math.PI * i / ORDER.length;
+  POS1[g] = {x: CX1 + R1 * Math.cos(a), y: CY1 + R1 * Math.sin(a), a};
+});
+
+let sel1 = null;
+let hov1 = null;
+
+function drawP1(){
+  const svg = d3.select('#net-p1');
+  svg.selectAll('*').remove();
+
+  svg.on('click', function(ev) {
+    if (ev.target.tagName === 'svg' || ev.target.tagName === 'rect') {
+      sel1 = null;
+      hov1 = null;
+      drawP1();
+    }
+  });
+
+  const defs = svg.append('defs');
+  const lg = defs.append('linearGradient').attr('id', 'split').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', 1);
+  lg.append('stop').attr('offset', '50%').attr('stop-color', 'var(--u-iula)');
+  lg.append('stop').attr('offset', '50%').attr('stop-color', 'var(--u-tradi)');
+
+  svg.append('rect')
+     .attr('width', W1)
+     .attr('height', H1)
+     .attr('fill', 'transparent');
+
+  const UMB1 = [
+    {u: 'URLING', gs: ['COLT','GraC','GLIF','ALLENCAM'], col: 'var(--u-urling)', fillOpacity: 0.05, strokeOpacity: 0.6, strokeWidth: 2},
+    {u: 'CER-IULA', gs: ['IULATERM','INFOLEX'], col: 'var(--u-iula)', fillOpacity: 0.05, strokeOpacity: 0.6, strokeWidth: 2},
+    {u: 'TRADILEX', gs: ['GEDIT','INFOLEX','TRILCAT'], col: 'var(--u-tradi)', fillOpacity: 0.05, strokeOpacity: 0.6, strokeWidth: 2},
+    {u: 'REALM', gs: ['GREPG','GR@EL'], col: 'var(--u-realm)', fillOpacity: 0.08, strokeOpacity: 0.8, strokeWidth: 2.5}
+  ];
+
+  const gU = svg.append('g');
+  UMB1.forEach(c => {
+    const pts = c.gs.map(g => POS1[g]);
+    const cx = d3.mean(pts, d => d.x);
+    const cy = d3.mean(pts, d => d.y);
+    const maxR = d3.max(pts, d => Math.hypot(d.x - cx, d.y - cy)) + 40;
+
+    gU.append('circle')
+      .attr('cx', cx).attr('cy', cy).attr('r', maxR)
+      .attr('fill', c.col).attr('fill-opacity', c.fillOpacity)
+      .attr('stroke', c.col).attr('stroke-width', c.strokeWidth)
+      .attr('stroke-opacity', c.strokeOpacity)
+      .attr('stroke-dasharray', c.dash ? '6 5' : null);
+
+    const outAngle = Math.atan2(cy - CY1, cx - CX1);
+    const lx = cx + (maxR - 10) * Math.cos(outAngle);
+    const ly = cy + (maxR - 10) * Math.sin(outAngle);
+
+    gU.append('text')
+      .attr('x', lx).attr('y', ly)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', 11).attr('font-weight', 'bold')
+      .attr('letter-spacing', '.08em')
+      .attr('fill', c.col)
+      .text(c.u.toUpperCase());
+  });
+
+  const gE = svg.append('g').attr('fill', 'none');
+  const gBL = svg.append('g');
+  const gN = svg.append('g');
+
+  const hideSGR = document.getElementById('chk-hide-sgr') ? document.getElementById('chk-hide-sgr').checked : false;
+  const activeData = P1_DATA.filter(p => hideSGR ? !p.sgr : true);
+
+  const groupTotals = {};
+  ORDER.forEach(g => groupTotals[g] = 0);
+  const pairs = {};
+
+  activeData.forEach(p => {
+    p.gs.forEach(g => {
+      if (groupTotals[g] !== undefined) groupTotals[g]++;
+    });
+    for (let i = 0; i < p.gs.length; i++) {
+      for (let j = i + 1; j < p.gs.length; j++) {
+        const g1 = p.gs[i], g2 = p.gs[j];
+        const k = g1 < g2 ? g1 + '|' + g2 : g2 + '|' + g1;
+        (pairs[k] = pairs[k] || {a: g1 < g2 ? g1 : g2, b: g1 < g2 ? g2 : g1, count: 0}).count++;
+      }
+    }
+  });
+
+  const edges = Object.values(pairs).filter(e => e.count > 0);
+  const mxT = d3.max(ORDER, g => groupTotals[g]) || 1;
+  const mxE = d3.max(edges, e => e.count) || 1;
+  const r = g => 12 + 18 * Math.sqrt(groupTotals[g] / mxT);
+
+  const foc = sel1 || hov1;
+  const on = e => e.a === foc || e.b === foc;
+  const focus = foc ? new Set([foc, ...edges.filter(on).flatMap(e => [e.a, e.b])]) : null;
+
+  const edgePath = e => {
+    const a = POS1[e.a], b = POS1[e.b];
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    return `M${a.x},${a.y}Q${mx + (CX1 - mx) * .35},${my + (CY1 - my) * .35} ${b.x},${b.y}`;
+  };
+  const edgeMid = e => {
+    const a = POS1[e.a], b = POS1[e.b];
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    const cx = mx + (CX1 - mx) * .35, cy = my + (CY1 - my) * .35;
+    return [.25 * a.x + .5 * cx + .25 * b.x, .25 * a.y + .5 * cy + .25 * b.y];
+  };
+
+  edges.forEach(e => {
+    const ew = 2 + 5 * Math.sqrt(e.count / mxE);
+    const isConn = foc ? on(e) : true;
+
+    gE.append('path')
+      .attr('class', 'ed')
+      .attr('d', edgePath(e))
+      .attr('stroke', isConn ? 'var(--edge)' : 'var(--hair)')
+      .attr('stroke-width', ew)
+      .attr('opacity', foc ? (isConn ? 0.95 : 0.08) : 0.65)
+      .on('mouseenter', (ev) => showTip(ev, `<b>${e.a} ↔ ${e.b}</b><br>${e.count} projecte(s) compartit(s)`))
+      .on('mousemove', moveTip)
+      .on('mouseleave', hideTip);
+
+    const mid = edgeMid(e);
+    const bl = gBL.append('g').attr('transform', `translate(${mid})`).attr('opacity', foc ? (isConn ? 1 : 0.1) : 1);
+    bl.append('circle').attr('r', 8.5).attr('fill', 'var(--surface)').attr('stroke', isConn ? 'var(--edge)' : 'var(--hair)');
+    bl.append('text').attr('text-anchor', 'middle').attr('y', 3.5).attr('font-size', 9.5).attr('font-weight', 'bold').attr('fill', 'var(--ink)').text(e.count);
+  });
+
+  ORDER.forEach(g => {
+    const p = POS1[g];
+    const gr = gN.append('g').attr('class', 'nd').attr('transform', `translate(${p.x},${p.y})`);
+    const isFocNode = foc ? focus.has(g) : true;
+
+    gr.attr('opacity', isFocNode ? 1 : 0.2);
+
+    gr.append('circle')
+      .attr('r', r(g) + 2)
+      .attr('fill', 'var(--surface)')
+      .attr('stroke', g === foc ? 'var(--ink)' : 'none')
+      .attr('stroke-width', 2);
+
+    gr.append('circle').attr('r', r(g)).attr('fill', fillOf(g));
+    gr.append('text').attr('text-anchor', 'middle').attr('y', 4).attr('font-size', 11).attr('font-weight', 'bold').attr('fill', '#ffffff').text(groupTotals[g]);
+
+    const labD = r(g) + 12;
+    const lx = labD * Math.cos(p.a), ly = labD * Math.sin(p.a);
+    const anc = Math.abs(Math.cos(p.a)) < .3 ? 'middle' : Math.cos(p.a) > 0 ? 'start' : 'end';
+    gr.append('text').attr('x', lx).attr('y', ly).attr('text-anchor', anc).attr('font-size', 11.5).attr('font-weight', 'bold').attr('fill', 'var(--ink)').text(g);
+
+    gr.on('click', (ev) => {
+      ev.stopPropagation();
+      sel1 = (sel1 === g) ? null : g;
+      hov1 = null;
+      drawP1();
+    })
+    .on('mouseenter', (ev) => {
+      const connPairs = edges.filter(e => e.a === g || e.b === g);
+      showTip(ev, `<b>Grup ${g}</b><br>${groupTotals[g]} projecte(s) compartit(s)<br>Connectat amb ${connPairs.length} grup(s)`);
+      if (!sel1) {
+        hov1 = g;
+        drawP1();
+      }
+    })
+    .on('mousemove', moveTip)
+    .on('mouseleave', () => {
+      hideTip();
+      hov1 = null;
+      drawP1();
+    });
+  });
+}
+
+drawP1();
+
+/* --- LOGICA PESTANYA 2 --- */
+const W2 = 1000, H2 = 780, CX2 = W2 / 2, CY2 = H2 / 2 + 4;
+const nodesP2 = PDI_DATA.nodes.map(d => ({...d}));
+const byIdP2 = Object.fromEntries(nodesP2.map(d => [d.id, d]));
+const gSizeP2 = Object.fromEntries(ORDER.map(g => [g, nodesP2.filter(d => d.g === g).length]));
+
+const share2 = ORDER.map(g => Math.sqrt(gSizeP2[g]) + .9), totS2 = d3.sum(share2);
+const GPOS2 = {}; let acc2 = 0;
+ORDER.forEach((g, i) => {
+  const a = -Math.PI / 2 + 2 * Math.PI * (acc2 + share2[i] / 2) / totS2;
+  acc2 += share2[i];
+  GPOS2[g] = [CX2 + 318 * Math.cos(a), CY2 + 272 * Math.sin(a)];
+});
+
+const R0_2 = 11;
+const sim2 = d3.forceSimulation(nodesP2)
+  .force('link', d3.forceLink(PDI_DATA.edges.map(e => ({source: e.a, target: e.b}))).id(d => d.id)
+    .distance(l => l.source.g === l.target.g ? 34 : 220).strength(l => l.source.g === l.target.g ? .12 : .004))
+  .force('charge', d3.forceManyBody().strength(-38).distanceMax(120))
+  .force('x', d3.forceX(d => GPOS2[d.g][0]).strength(.32))
+  .force('y', d3.forceY(d => GPOS2[d.g][1]).strength(.32))
+  .force('collide', d3.forceCollide(R0_2 + 9)).stop();
+
+nodesP2.forEach((d, i) => { d.x = GPOS2[d.g][0] + Math.cos(i * 2.4) * 16; d.y = GPOS2[d.g][1] + Math.sin(i * 2.4) * 16; });
+for (let i = 0; i < 600; i++) sim2.tick();
+nodesP2.forEach(d => { d.x = Math.max(30, Math.min(W2 - 30, d.x)); d.y = Math.max(40, Math.min(H2 - 26, d.y)); });
+
+const halosP2 = ORDER.map(g => {
+  const ns = nodesP2.filter(d => d.g === g), cx = d3.mean(ns, d => d.x), cy = d3.mean(ns, d => d.y);
+  return {g, cx, cy, rr: d3.max(ns, d => Math.hypot(d.x - cx, d.y - cy)) + R0_2 + 14};
+});
+
+function changePdiType(t) {
+  drawP2(t);
+}
+
+function drawP2(t) {
+  const svg = d3.select('#net-p2');
+  svg.selectAll('*').remove();
+
+  let sel2 = null, hov2 = null;
+
+  svg.on('click', function(ev) {
+    if (ev.target.tagName === 'svg' || ev.target.tagName === 'rect') {
+      sel2 = null;
+      hov2 = null;
+      update();
+    }
+  });
+
+  const meta = {
+    'P': {title: 'PROJECTES', color: 'var(--t-p)', label: 'projectes'},
+    'A': {title: 'ARTICLES', color: 'var(--t-a)', label: 'articles'},
+    'T': {title: 'TESIS', color: 'var(--t-t)', label: 'tesis'}
+  }[t];
+
+  document.getElementById('pdi-title').innerHTML = `<i style="border-color:${meta.color}"></i>${meta.title} <span>· Col·laboracions de PDI en ${meta.label}</span>`;
+
+  svg.append('rect')
+     .attr('width', W2)
+     .attr('height', H2)
+     .attr('fill', 'transparent');
+
+  const es = PDI_DATA.edges.filter(e => e[t] > 0);
+  const deg = Object.fromEntries(nodesP2.map(d => [d.id, d3.sum(es.filter(e => e.a === d.id || e.b === d.id), e => e[t])]));
+  const mxD = d3.max(Object.values(deg)) || 1;
+  const r = d => deg[d.id] ? 5 + 11 * Math.sqrt(deg[d.id] / mxD) : 4;
+  const MXE = d3.max(PDI_DATA.edges, e => Math.max(e.P, e.A, e.T)) || 1;
+
+  const gG = svg.append('g'), gL = svg.append('g').attr('fill', 'none'), gN = svg.append('g'), gT = svg.append('g');
+
+  halosP2.forEach(h => {
+    gG.append('circle').attr('cx', h.cx).attr('cy', h.cy).attr('r', h.rr).attr('fill', 'var(--ink)').attr('fill-opacity', .035).attr('stroke', 'var(--hair)');
+    const out = Math.atan2(h.cy - CY2, h.cx - CX2), lx = h.cx + (h.rr + 14) * Math.cos(out), ly = h.cy + (h.rr + 14) * Math.sin(out);
+    const anchor = Math.abs(Math.cos(out)) < .35 ? 'middle' : Math.cos(out) > 0 ? 'start' : 'end';
+    const tx = gT.append('text').attr('x', lx).attr('y', ly + 4).attr('text-anchor', anchor).attr('font-size', 12).attr('font-weight', 'bold').attr('fill', 'var(--ink-2)');
+    tx.append('tspan').text(h.g);
+    tx.append('tspan').attr('fill', 'var(--muted)').attr('font-weight', 'normal').text(` · ${gSizeP2[h.g]}`);
+  });
+
+  const edgePath2 = e => {
+    const a = byIdP2[e.a], b = byIdP2[e.b];
+    if (a.g === b.g) return `M${a.x},${a.y}L${b.x},${b.y}`;
+    const mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2;
+    return `M${a.x},${a.y}Q${mx + (CX2 - mx) * .45},${my + (CY2 - my) * .45} ${b.x},${b.y}`;
+  };
+
+  function update() {
+    const foc = sel2 || hov2;
+    const on = e => e.a === foc || e.b === foc;
+    const partners = id => es.filter(e => e.a === id || e.b === id);
+    const focus = foc ? new Set([foc, ...partners(foc).flatMap(e => [e.a, e.b])]) : null;
+
+    gL.selectAll('path').data(es, e => e.a + '|' + e.b).join('path')
+      .attr('d', edgePath2)
+      .attr('stroke', meta.color)
+      .attr('stroke-linecap', 'round')
+      .attr('stroke-width', e => 1 + 5 * Math.sqrt(e[t] / MXE))
+      .attr('opacity', e => foc ? (on(e) ? .95 : .05) : (byIdP2[e.a].g === byIdP2[e.b].g ? .85 : .6))
+      .on('mouseenter', (ev, e) => showTip(ev, `<b>${e.a} – ${e.b}</b><br>${e[t]} ${meta.label} en comú`))
+      .on('mousemove', moveTip)
+      .on('mouseleave', hideTip);
+
+    const g = gN.selectAll('g.pn').data(nodesP2, d => d.id).join(en => {
+      const g = en.append('g').attr('class', 'pn');
+      g.append('circle').attr('class', 'halo').attr('fill', 'var(--surface)');
+      g.append('circle').attr('class', 'dot');
+      g.append('text').attr('font-size', 10).attr('font-weight', 'bold').attr('text-anchor', 'middle').attr('fill', 'var(--ink)');
+      return g;
+    });
+
+    g.attr('transform', d => `translate(${d.x},${d.y})`)
+     .attr('opacity', d => focus ? (focus.has(d.id) ? 1 : .15) : deg[d.id] ? 1 : .3);
+
+    g.select('.halo').attr('r', d => r(d) + 2).attr('stroke', d => d.id === foc ? 'var(--ink)' : 'none').attr('stroke-width', 2);
+    g.select('.dot').attr('r', r).attr('fill', d => fillOf(d.g));
+    g.select('text').attr('y', d => -r(d) - 4).text(d => d.id)
+     .attr('display', d => (focus ? focus.has(d.id) : deg[d.id] >= Math.max(2, mxD * .25)) ? null : 'none');
+
+    g.on('click', (ev, d) => {
+      ev.stopPropagation();
+      sel2 = sel2 === d.id ? null : d.id;
+      hov2 = null;
+      update();
+    })
+    .on('mouseenter', (ev, d) => {
+      const ps = partners(d.id);
+      showTip(ev, `<b>${d.nom}</b><br>${d.g}<br>${deg[d.id]} ${meta.label} en comú amb ${ps.length} PDI`);
+      if (!sel2) {
+        hov2 = d.id;
+        update();
+      }
+    })
+    .on('mousemove', moveTip)
+    .on('mouseleave', () => {
+      hideTip();
+      hov2 = null;
+      update();
+    });
+  }
+
+  update();
+}
+</script>
+</body>
+</html>
